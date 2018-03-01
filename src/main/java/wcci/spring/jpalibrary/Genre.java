@@ -1,8 +1,11 @@
 package wcci.spring.jpalibrary;
 
+import java.util.Collection;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Genre {
@@ -10,6 +13,9 @@ public class Genre {
 	@GeneratedValue
 	private long id; 
 	
+	
+	@OneToMany(mappedBy = "genre")
+	private Collection<Book> books; 
 	private String type; 
 	public Genre() {
 		
@@ -26,5 +32,11 @@ public class Genre {
 	public Long getId() {
 		return id; 
 	}
+
+	public Collection<Book> getBooks() {
+		
+		return books;
+	}
+
 
 }

@@ -18,12 +18,14 @@ public class LibraryPopulator implements CommandLineRunner{
 	public void run(String... args) throws Exception{
 		Genre fiction = new Genre("Fiction"); 
 		Genre nonfiction = new Genre("Non-Fiction");
+		fiction = genreRepo.save(fiction); 
+		nonfiction = genreRepo.save(nonfiction); 
 		
-//		Book headfirstjava = new Book("Head First Java"); 
-//		Book sqltables = new Book("SQL Tables"); 
-//		
-//		bookRepo.save(new Book("Head First Java"));
-//		bookRepo.save(new Book("SQL Tables"));
+		Book headfirstjava = new Book("Head First Java",nonfiction); 
+		Book sqltables = new Book("SQL Tables",nonfiction); 
+		
+		bookRepo.save(new Book("Head First Java",nonfiction));
+		bookRepo.save(new Book("SQL Tables",nonfiction));
 	}
 	
 	
