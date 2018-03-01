@@ -24,6 +24,9 @@ public class JpaLibraryMappingsTest {
 
 	@Resource
 	private BookRepository bookRepo;
+	
+	@Resource
+	private AuthorRepository authorRepo; 
 
 	@Test
 	public void shouldSaveAndLoadCourse() {
@@ -56,7 +59,58 @@ public class JpaLibraryMappingsTest {
 
 		genre = genreRepo.findOne(genreId);
 		assertThat(genre.getBooks(), containsInAnyOrder(test, test2));
-
 	}
+	
+	@Test
+	public void shouldSaveAndLoadAuthor() {
+		Author author = authorRepo.save(new Author("fname","lname")); 
+		long authorId = author.getId(); 
+		
+		entityManager.flush(); 
+		entityManager.clear(); 
+		
+		author = authorRepo.findOne(authorId); 
+		assertThat(author.getFirstName(), is("fname")); 
+	}
+	
+	@Test
+	public void shouldEstablishBookAuthorsRelationships() {
+		Genre genre = genreRepo.save(new Genre("TEST"));
+		
+		Author first = authorRepo.save(new Author("test","author")); 
+		Author second = authorRepo.save(new Author("test2","author2")); 
+		
+		Book book = new Book("testBook",genre,first,second); 
+		bookRepo.save(book);
+		long bookId = book.getId(); 
+		
+		entityManager.flush();
+		entityManager.clear();
+		
+		book = bookRepo.findOne(bookId); 
+		assertThat(book.getAuthors(),containsInAnyOrder(first,second));
+	}
+	
+	@Test
+	public void shouldEstablishAuthorBooksRelationships() {
+		Genre genre = genreRepo.save(new Genre("TEST"));
+		
+		Author first = authorRepo.save(new Author("test","author")); 
+		
+		Book book = new Book("testBook",genre,first); 
+		Book book2 = new Book("testBook2",genre,first);
+		bookRepo.save(book);
+		bookRepo.save(book2); 
+		
+		long authorId = first.getId(); 
+		
+		entityManager.flush();
+		entityManager.clear();
+		
+		first = authorRepo.findOne(authorId); 
+		assertThat(first.getBooks(),containsInAnyOrder(book, book2));
+	
+	}
+
 
 }

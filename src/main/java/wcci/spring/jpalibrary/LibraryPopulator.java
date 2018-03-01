@@ -26,6 +26,11 @@ public class LibraryPopulator implements CommandLineRunner{
 		
 		bookRepo.save(new Book("Head First Java",nonfiction));
 		bookRepo.save(new Book("SQL Tables",nonfiction));
+		
+		Author george = new Author("george","lucas"); 
+		Author rrmartin = new Author("RR","Martin"); 
+		authorRepo.save(new Author("george","lucas"));
+		authorRepo.save(new Author("RR","Martin")); 
 	}
 	
 	

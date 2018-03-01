@@ -1,8 +1,12 @@
 package wcci.spring.jpalibrary;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -11,9 +15,10 @@ public class Book {
 	@GeneratedValue
 	private long id; 
 	
-//	private Author author; 
+	@ManyToMany
+	private Collection<Author> author; 
 	private String title;
-	private String java; 
+	
 	@ManyToOne
 	private Genre genre; 
 	
@@ -21,12 +26,14 @@ public class Book {
 		
 	}
 	
-	public Book(String title, Genre genre) {
+	public Book(String title, Genre genre, Author...authors) {
 		this.title = title; 
 		this.genre = genre; 
+		this.author = Arrays.asList(authors); 
 	}
 	
-	
+
+
 	public long getId() {
 		return id; 
 	}
@@ -35,9 +42,13 @@ public class Book {
 		return genre;
 	}
 	
-//	public Author getAuthor() {
-//		return this.author; 
-//	}
+	public Collection<Author> getAuthors() {
+		return this.author; 
+	}
+	
+	public String getTitle() {
+		return title;
+	}
 	
 	@Override
 	public int hashCode() {
